@@ -8,12 +8,13 @@ B. lscpu
 What is the difference between BIOS and UEFI in terms of boot process and functionality?
 - the UEFI boots faster compared to the BIOS  
 - the BIOS uses the MBR while the UEFI uses the ESP
+- the BIOS supports less space compared to the UEFI
 
 
 3- 
 - Use a command to determine which kernel modules are loaded in the current system. Explain how to load a new module named dummy.
 ```sh
-kmod
+lsmod
 ```
 - to load new module named dummy, you enter the /etc/modules configuration file and insert the name of the module. 
 in this case "dummy" save the file, exit and source and the module  will be loaded at boot time.
@@ -21,24 +22,27 @@ in this case "dummy" save the file, exit and source and the module  will be load
 4- 
 Explain the purpose of the /proc and /sys directories in Linux.
 - The /proc directory is used to stores in fomations about all running processes in your coputer.
-- the /sys directory is used to store system data.
+- the /sys directory stores device information and kernel data.
 
 ## Section 2: Linux Installation and Package Management (20 Marks)
 5- 
 Which of the following commands installs a package using the APT package manager?
+
 C. apt install package
 
 6- 
 Describe the difference between apt and dpkg.
 - dpkg is less user friendly compared to apt
-- 
+- dpkg is a low level package manager, apt is a high level package manager
 
 7- 
 Write a command to find and remove orphaned packages in a Debian-based system.
 ```sh
-dpkg -r package
+deborphan | xargs dpkg -r  
 ```
-
+8- On a Red Hat-based system, explain how to configure a new YUM repository with the base URL http://repo.example.com. Provide a sample .repo file configuration.
+-  /etc/yum.repos.d: configuration file
+- yum localinstall URL
 
 ## Section 3: GNU and Unix Commands (30 Marks)
 9- 
@@ -47,7 +51,7 @@ Which command is used to display the last 10 lines of a file?
 B. tail
 
 
-10- [Practical]
+10- 
 Write a command to count the number of lines containing the word "error" in the file /var/log/syslog.
 ```sh
 grep error /var/log/syslog | wc -l 
@@ -108,7 +112,9 @@ You have added a new disk to the system. Write the steps to create a new partiti
 - list all partition tables of the new disk *fdisk -l /dev/sdx*
 - open /dev/sdb *fdisk /dev/sdx*
 - use the **n** option to create a new partition
-- formart it with an ext4 filesystem *mkfs.ext4 /dev/sdx*
+- formart it with an ext4 filesystem *mkfs.ext4 /dev/sdx1*
+- mount it in a new directory *mkdir new_directory
+- mount /dev/sdx1 /new_directory*
 
 18- 
 What is the purpose of the /etc/fstab file? Provide an example entry for mounting a filesystem.
@@ -117,6 +123,11 @@ What is the purpose of the /etc/fstab file? Provide an example entry for mountin
   
 Bonus Question (Optional - 10 Marks)
 Explain the boot process in Linux from powering on the machine to a fully loaded OS, detailing the role of GRUB, the kernel, and system initialization.
+- After the computer is powered on, the POST is executed to identify hardware failures
+- The firmware is initialized (BIOS/ UEFI)
+- the motheroard loads the bootloader GRUB
+- the GRUB loads the operating system or kernel
+- the kernel through the initramfs loads everything else where intervenes system initialization.
   
 
 
